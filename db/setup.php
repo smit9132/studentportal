@@ -7,10 +7,11 @@
 
 session_start();
 
-$host = '127.0.0.1';
-$user = 'root';
-$pass = ''; // change if needed
-$db = 'studentportal';
+// Use Render environment variables for DB credentials
+$host = getenv('DB_HOST') ?: '127.0.0.1';
+$user = getenv('DB_USER') ?: 'root';
+$pass = getenv('DB_PASS') ?: '';
+$db   = getenv('DB_NAME') ?: 'studentportal';
 
 function csrf_token() {
     if (empty($_SESSION['csrf'])) {
@@ -38,7 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $msg = 'DB connect error: ' . $mysqli->connect_error;
             } else {
                 $hash = password_hash($password, PASSWORD_BCRYPT);
-                $stmt = $mysqli->prepare("INSERT INTO users (username, email, password, role, status) VALUES (?, ?, ?, 'admin', 'active') ON DUPLICATE KEY UPDATE password=VALUES(password), role='admin', status='active'");
+                $stmt = $mysqli->prepare(
+                    "INSERT INTO users (username, email, password, role, status) 
+                     VALUES (?, ?, ?, 'admin', 'active') 
+                     ON DUPLICATE KEY UPDATE password=VALUES(password), role='admin', status='active'"
+                );
                 $stmt->bind_param('sss', $username, $email, $hash);
                 if ($stmt->execute()) {
                     $msg = 'Admin user created/updated successfully.';

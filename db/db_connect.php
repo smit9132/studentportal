@@ -1,16 +1,15 @@
 <?php
 // db/db_connect.php
 // PDO-based connection helper for StudentPortal
-
 declare(strict_types=1);
 
 session_start();
 
-// DB credentials (edit if needed for your system)
-define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'studentportal');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// Use environment variables if available (for Render or other hosts)
+$host = getenv('DB_HOST') ?: '127.0.0.1';
+$db   = getenv('DB_NAME') ?: 'studentportal';
+$user = getenv('DB_USER') ?: 'root';
+$pass = getenv('DB_PASS') ?: '';
 
 // Function to return PDO instance
 function getPDO(): PDO
@@ -20,7 +19,9 @@ function getPDO(): PDO
         return $pdo;
     }
 
-    $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4';
+    global $host, $db, $user, $pass;
+
+    $dsn = 'mysql:host=' . $host . ';dbname=' . $db . ';charset=utf8mb4';
     $options = [
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -28,7 +29,7 @@ function getPDO(): PDO
     ];
 
     try {
-        $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
+        $pdo = new PDO($dsn, $user, $pass, $options);
         return $pdo;
     } catch (PDOException $e) {
         exit('Database connection failed: ' . $e->getMessage());

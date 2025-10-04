@@ -1,0 +1,6 @@
+/* Simple styles for StudentPortal */
+body { padding-top: 70px; }
+.jumbotron { background: #f8f9fa; border-radius: .5rem; padding: 2rem; }
+.table-actions a { margin-right: .5rem; }
+.form-error { color: #dc3545; }
+.form-success { color: #198754; }

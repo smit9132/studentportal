@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # StudentPortal
 
 Simple PHP + MySQL portal integrating authentication, users, students, and events.
@@ -31,3 +32,7 @@ Security notes
 - Uses PDO prepared statements to prevent SQL injection.
 - Passwords must be hashed (uses PHP's `password_hash`/`password_verify`).
 - Session-based access control and role checks are implemented.
+=======
+# studentportal
+my work for lab submission
+>>>>>>> abc16b3fee7385b96eed4ae6f20bc417abe648b9
